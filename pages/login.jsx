@@ -44,14 +44,30 @@ const Login = ({ users }) => {
   };
 
   const adminSignIn = async () => {
+    const data = {
+      email: username,
+      password: password,
+    };
+
     if (signinAsAdmin) {
       try {
         const res = await axios.post(`${url}/api/login`, {
           username,
           password,
         });
+        const adminres = await axios.post(`${url}/api/authenticate`, data);
+        setCookies(adminres.data.token);
+
+        dispatch(
+          login({
+            email: adminres.data.email,
+            token: adminres.data.token,
+          })
+        );
+
         console.log(res);
-        router.push("/");
+        console.log(adminres);
+        //router.push("/admin");
       } catch (err) {
         setError(true);
       }
@@ -193,8 +209,19 @@ const Login = ({ users }) => {
 };
 
 export default Login;
-export const getServerSideProps = async () => {
+export const getServerSideProps = async (ctx) => {
+  const myCookie = ctx.req?.cookies || "";
+
   await dbConnect();
+
+  if (myCookie.token !== process.env.TOKEN) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
 
   let environment = process.env.NODE_ENV;
 
