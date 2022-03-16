@@ -12,7 +12,7 @@ export default function Home({ pizzaList }) {
   );
 }
 
-export const getstaticprops = async (ctx) => {
+export const getServerSideProps = async (ctx) => {
   await dbConnect();
   const url =
     process.env.PROD_STATUS === "true"
