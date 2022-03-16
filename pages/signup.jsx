@@ -35,8 +35,6 @@ function Signup({ users }) {
       ? "http://localhost:3000"
       : "https://zhpizzarestaurant.netlify.app/";
 
-  console.log(url);
-
   const navSignIn = () => {
     router.push(`/login`);
   };
