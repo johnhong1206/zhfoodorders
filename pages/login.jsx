@@ -17,8 +17,8 @@ import { selectmenuIsOpen } from "../features/menuSlice";
 const Menu = dynamic(() => import("../components/Menu"));
 
 const Login = ({ users }) => {
+  const router = useRouter();
   const MenuNav = useSelector(selectmenuIsOpen);
-
   const [signinAsAdmin, setSigninAsAdmin] = useState(false);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -38,10 +38,6 @@ const Login = ({ users }) => {
     environment === "development"
       ? "http://localhost:3000"
       : "https://zhpizzarestaurant.netlify.app/";
-
-  console.log(url);
-
-  const router = useRouter();
 
   const navSIgnUp = () => {
     router.push(`/signup`);
