@@ -50,11 +50,12 @@ const Login = ({ users }) => {
   const adminSignIn = async () => {
     if (signinAsAdmin) {
       try {
-        await axios.post(`${url}/api/login`, {
+        const res = await axios.post(`${url}/api/login`, {
           username,
           password,
         });
-        router.push("/admin");
+        console.log(res);
+        router.push("/");
       } catch (err) {
         setError(true);
       }
