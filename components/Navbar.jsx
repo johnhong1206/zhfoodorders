@@ -70,26 +70,23 @@ const Navbar = () => {
           >
             Contact
           </li>
-          {user && (
-            <>
-              {user?.email === "admin" ? (
-                <Link href="/admin" passHref>
-                  <li
-                    className={` m-5 text-white font-medium cursor-pointer hover:text-gray-100 hover:underline`}
-                  >
-                    Admin
-                  </li>
-                </Link>
-              ) : (
-                <Link href="/orders" passHref>
-                  <li
-                    className={` m-5 text-white font-medium cursor-pointer hover:text-gray-100 hover:underline`}
-                  >
-                    Orders
-                  </li>
-                </Link>
-              )}
-            </>
+          {user?.admin === true && (
+            <Link href="/admin" passHref>
+              <li
+                className={` m-5 text-white font-medium cursor-pointer hover:text-gray-100 hover:underline`}
+              >
+                Admin
+              </li>
+            </Link>
+          )}
+          {user && user?.admin === false && (
+            <Link href="/orders" passHref>
+              <li
+                className={` m-5 text-white font-medium cursor-pointer hover:text-gray-100 hover:underline`}
+              >
+                Orders
+              </li>
+            </Link>
           )}
 
           {!user ? (

@@ -62,12 +62,13 @@ const Login = ({ users }) => {
           login({
             email: adminres.data.email,
             token: adminres.data.token,
+            admin: true,
           })
         );
 
         console.log(res);
         console.log(adminres);
-        //router.push("/admin");
+        router.push("/");
       } catch (err) {
         setError(true);
       }
@@ -93,6 +94,7 @@ const Login = ({ users }) => {
           login({
             email: res.data.email,
             token: res.data.token,
+            admin: false,
           })
         );
         router.push(`/`);
