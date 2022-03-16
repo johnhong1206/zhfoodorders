@@ -154,11 +154,12 @@ function ProductDetails({ pizza }) {
 export default ProductDetails;
 export const getServerSideProps = async ({ params }) => {
   await dbConnect();
+  let environment = process.env.NODE_ENV;
 
   const url =
-    process.env.PROD_STATUS === "true"
-      ? process.env.PRODUCTION_URL
-      : process.env.DEV_URL;
+    environment === "development"
+      ? process.env.DEV_URL
+      : process.env.PRODUCTION_URL;
 
   const res = await axios.get(`${url}/api/products/${params.id}`);
   return {
