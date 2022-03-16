@@ -15,7 +15,7 @@ export default function Home({ pizzaList }) {
 export const getstaticprops = async (ctx) => {
   await dbConnect();
   const url =
-    process.env.PROD_STATUS === "false"
+    process.env.PROD_STATUS === "true"
       ? process.env.PRODUCTION_URL
       : process.env.DEV_URL;
 
