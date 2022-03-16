@@ -16,8 +16,6 @@ export default function Home({ pizzaList, admin }) {
   const [loading, setLoading] = useState(true);
   const MenuNav = useSelector(selectmenuIsOpen);
 
-  console.log(admin);
-
   useEffect(() => {
     if (pizzaList) {
       setLoading(false);
