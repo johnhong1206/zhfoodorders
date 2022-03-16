@@ -6,6 +6,7 @@ import Head from "next/head";
 //components
 const Featured = dynamic(() => import("../components/Featured"));
 const Menu = dynamic(() => import("../components/Menu"));
+const PizzaList = dynamic(() => import("../components/PizzaList"));
 
 //redux
 import { selectmenuIsOpen } from "../features/menuSlice";
@@ -32,9 +33,8 @@ export default function Home({ pizzaList }) {
       </Head>
       <Featured />
 
-      {pizzaList?.map((pizza) => (
-        <div key={pizza._id}>{pizza?.title}</div>
-      ))}
+      {!loading ? <PizzaList pizzaList={pizzaList} /> : <p>Loading...</p>}
+
       {MenuNav && <Menu />}
     </div>
   );
