@@ -154,7 +154,7 @@ const Login = ({ users }) => {
               onClick={adminSignIn}
               disabled={isAdminInvalid}
               type="submit"
-              className={`bg-[#008080] text-white w-full rounded h-10 lg:h-8 font-bold hover:shadow-xl ${
+              className={`bg-[#008080] bg-gradient-to-r from-[#06202A] text-white w-full rounded h-10 lg:h-8 font-bold hover:shadow-xl ${
                 isAdminInvalid && "opacity-50 "
               }`}
             >
@@ -211,19 +211,8 @@ const Login = ({ users }) => {
 };
 
 export default Login;
-export const getServerSideProps = async (ctx) => {
-  const myCookie = ctx.req?.cookies || "";
-
+export const getServerSideProps = async () => {
   await dbConnect();
-
-  if (myCookie.token !== process.env.TOKEN) {
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    };
-  }
 
   let environment = process.env.NODE_ENV;
 

@@ -3,20 +3,27 @@ import Image from "next/image";
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import dbConnect from "../../util/mongo";
+import { useRouter } from "next/router";
 
 //redux
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectmenuIsOpen } from "../../features/menuSlice";
+
+import { selectUser } from "../../features/userSlice";
 
 const Menu = dynamic(() => import("../../components/Menu"));
 const Add = dynamic(() => import("../../components/Add"));
 
 const Index = ({ orders, products }) => {
+  const [isAdmin, setIsAdmin] = useState(false);
   const [pizzaList, setPizzaList] = useState(products);
   const [orderList, setOrderList] = useState(orders);
   const [openAdd, setOpenAdd] = useState(false);
+  const status = ["preparing", "on the way", "delivered"];
   const MenuNav = useSelector(selectmenuIsOpen);
+  const user = useSelector(selectUser);
+  const router = useRouter();
 
   let environment = process.env.NODE_ENV;
 
@@ -25,7 +32,11 @@ const Index = ({ orders, products }) => {
       ? "http://localhost:3000"
       : "https://zhpizzarestaurant.netlify.app/";
 
-  const status = ["preparing", "on the way", "delivered"];
+  useEffect(() => {
+    if (!user || !user?.admin) {
+      router.push("/login");
+    }
+  }, [user]);
 
   const handleDelete = async (id) => {
     console.log("id", id);
@@ -53,6 +64,8 @@ const Index = ({ orders, products }) => {
       console.log(err);
     }
   };
+
+  if (!user?.admin) return false;
 
   return (
     <div className="flex flex-col lg:flex-row w-screen">
@@ -157,7 +170,7 @@ const Index = ({ orders, products }) => {
   );
 };
 
-export const getServerSideProps = async (ctx) => {
+export const getServerSideProps = async () => {
   await dbConnect();
   let environment = process.env.NODE_ENV;
 
@@ -165,17 +178,6 @@ export const getServerSideProps = async (ctx) => {
     environment === "development"
       ? "http://localhost:3000"
       : "https://zhpizzarestaurant.netlify.app/";
-
-  const myCookie = ctx.req?.cookies || "";
-
-  if (myCookie.token !== process.env.TOKEN) {
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    };
-  }
 
   const productRes = await axios.get(`${url}/api/products`);
   const orderRes = await axios.get(`${url}/api/orders`);

@@ -21,6 +21,10 @@ const Navbar = () => {
     router.push("/");
   };
 
+  const navLogin = () => {
+    router.push("/login");
+  };
+
   return (
     <div
       className={`gradient-bg sticky   top-0  z-50 h-[100px] px-10 py-2 flex items-center justify-between`}
@@ -90,13 +94,13 @@ const Navbar = () => {
           )}
 
           {!user ? (
-            <Link href="/login" passHref>
+            <div onClick={navLogin}>
               <li
                 className={` m-5 text-white font-medium cursor-pointer hover:text-gray-100 hover:underline`}
               >
                 Login
               </li>
-            </Link>
+            </div>
           ) : (
             <li
               onClick={signout}

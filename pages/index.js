@@ -12,11 +12,9 @@ const PizzaList = dynamic(() => import("../components/PizzaList"));
 import { selectmenuIsOpen } from "../features/menuSlice";
 import { useSelector } from "react-redux";
 
-export default function Home({ pizzaList, admin }) {
+export default function Home({ pizzaList }) {
   const [loading, setLoading] = useState(true);
   const MenuNav = useSelector(selectmenuIsOpen);
-
-  console.log("admin", admin);
 
   useEffect(() => {
     if (pizzaList) {
