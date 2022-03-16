@@ -14,8 +14,11 @@ export default function Home({ pizzaList }) {
 
 export const getServerSideProps = async (ctx) => {
   await dbConnect();
-  const production = false;
-  const url = !production ? process.env.DEV_URL : process.env.PRODUCTION_URL;
+  const url =
+    process.env.PROD_STATUS === "true"
+      ? process.env.PRODUCTION_URL
+      : process.env.DEV_URL;
+
   const myCookie = ctx.req?.cookies || "";
   let admin = false;
 
