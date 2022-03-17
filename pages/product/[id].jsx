@@ -70,9 +70,7 @@ function ProductDetails({ pizza }) {
       </div>
       <div className={`flex-1 p-5`}>
         <h1 className={`m-1`}>{pizza.title}</h1>
-        <span
-          className={`text-red-400 text-2xl font-medium border-b-2 border-red-500`}
-        >
+        <span className="text-center font-medium text-transparent text-2xl  bg-clip-text bg-gradient-to-tr from-gray-800 to-green-300">
           RM{price}
         </span>
         <p className={`my-2 text-sm`}>{pizza.desc}</p>

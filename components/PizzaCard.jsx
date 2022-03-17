@@ -13,7 +13,7 @@ function PizzaCard({ key, pizza }) {
           objectFit="contain"
         />
       </Link>
-      <h1 className={`text-lg text-red-400 font-bold text-center`}>
+      <h1 className="text-center font-bold text-transparent text-lg bg-clip-text bg-gradient-to-tr from-gray-800 to-green-300">
         {pizza.title}
       </h1>
       <h2 className={`text-center font-semibold font-[#666]`}>
