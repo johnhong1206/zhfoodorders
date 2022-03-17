@@ -17,7 +17,8 @@ function PizzaCard({ key, pizza }) {
         {pizza.title}
       </h1>
       <h2 className={`text-center font-semibold font-[#666]`}>
-        ${pizza.prices[0]}
+        <span className={`mr-1`}>RM</span>
+        {pizza.prices[0]}
       </h2>
       <p className={`text-sm font-medium text-center font-[#777]`}>
         {pizza.desc}
