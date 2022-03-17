@@ -68,7 +68,7 @@ const Index = ({ orders, products }) => {
   if (!user?.admin) return false;
 
   return (
-    <div className="flex flex-col lg:flex-row w-screen">
+    <div className="flex flex-col lg:flex-row max-w-screen">
       <Head>
         <title>Admin</title>
         <meta name="description" content="Best pizza shop in town" />
