@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import Head from "next/head";
 import dbConnect from "../../util/mongo";
 import { useRouter } from "next/router";
+import toast from "react-hot-toast";
 
 //redux
 import { useEffect, useState } from "react";
@@ -38,13 +39,30 @@ const Index = ({ orders, products }) => {
     }
   }, [user]);
 
+  const fetchPizza = async () => {
+    const notification = toast.loading("Getting Food Data...");
+
+    await axios.get(`${url}/api/products`).then((res) => {
+      setPizzaList(res.data);
+      toast.success("Get Food Data Success", {
+        id: notification,
+      });
+    });
+  };
+
   const handleDelete = async (id) => {
-    console.log("id", id);
+    const notification = toast.loading("Delete Food Data...");
     try {
       const res = await axios.delete(`${url}/api/products/` + id);
+      toast.success("Food Delete Success", {
+        id: notification,
+      });
       setPizzaList(pizzaList.filter((pizza) => pizza._id !== id));
     } catch (err) {
       console.log("err", err);
+      toast.error("Something went Wrong", {
+        id: notification,
+      });
     }
   };
 
@@ -76,6 +94,7 @@ const Index = ({ orders, products }) => {
       </Head>
       <div className="flex-1  w-full lg:w-1/2">
         <h1 className="font-bold text-center text-2xl">Products</h1>
+        <button onClick={fetchPizza}>fetchPizza</button>
         <div className="w-full flex-1">
           {pizzaList?.map((product) => (
             <div
@@ -122,7 +141,7 @@ const Index = ({ orders, products }) => {
           >
             Add
           </button>
-          {openAdd && <Add setOpenAdd={setOpenAdd} />}
+          {openAdd && <Add setOpenAdd={setOpenAdd} fetchPizza={fetchPizza} />}
         </div>
       </div>
       <div className="flex-1  w-full lg:w-1/2">
@@ -170,8 +189,13 @@ const Index = ({ orders, products }) => {
   );
 };
 
-export const getServerSideProps = async () => {
+export const getServerSideProps = async ({ req, res }) => {
   await dbConnect();
+  res.setHeader(
+    "Cache-Control",
+    "public, s-maxage=10, stale-while-revalidate=59"
+  );
+
   let environment = process.env.NODE_ENV;
 
   const url =

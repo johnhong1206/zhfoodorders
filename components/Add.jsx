@@ -1,8 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
 import { AiOutlineCloseCircle } from "react-icons/ai";
+import toast from "react-hot-toast";
 
-const Add = ({ setOpenAdd }) => {
+const Add = ({ setOpenAdd, fetchPizza }) => {
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState(null);
   const [desc, setDesc] = useState(null);
@@ -31,6 +32,8 @@ const Add = ({ setOpenAdd }) => {
   };
 
   const handleCreate = async () => {
+    const notification = toast.loading("Creating new food...");
+
     const data = new FormData();
     data.append("file", file);
     data.append("upload_preset", "uploads");
@@ -50,10 +53,18 @@ const Add = ({ setOpenAdd }) => {
         img: url,
       };
 
-      await axios.post(`${apiurl}/api/products`, newProduct);
-      setOpenAdd(false);
+      await axios.post(`${apiurl}/api/products`, newProduct).then((res) => {
+        toast.success("New Food Submitted", {
+          id: notification,
+        });
+        setOpenAdd(false);
+        fetchPizza();
+      });
     } catch (err) {
       console.log("err", err);
+      toast.error("Something Error", {
+        id: notification,
+      });
     }
   };
 
@@ -149,7 +160,8 @@ const Add = ({ setOpenAdd }) => {
             </div>
           </div>
           <button
-            className={`bg-red-400 border-none cursor-pointer w-1/4 text-white rounded-lg hover:bg-opacity-70 font-medium p-1`}
+            disabled={!title || !file || !desc}
+            className={`bg-red-400 border-none disabled:bg-opacity-50 cursor-pointer w-1/4 text-white rounded-lg hover:bg-opacity-70 font-medium p-1`}
             onClick={handleCreate}
           >
             Create

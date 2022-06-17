@@ -40,8 +40,13 @@ export default function Home({ pizzaList }) {
   );
 }
 
-export const getServerSideProps = async (ctx) => {
+export const getServerSideProps = async ({ res }) => {
   await dbConnect();
+
+  res.setHeader(
+    "Cache-Control",
+    "public, s-maxage=10, stale-while-revalidate=59"
+  );
   let environment = process.env.NODE_ENV;
 
   const url =
@@ -49,18 +54,10 @@ export const getServerSideProps = async (ctx) => {
       ? process.env.DEV_URL
       : process.env.PRODUCTION_URL;
 
-  const myCookie = ctx.req?.cookies || "";
-  let admin = false;
-
-  if (myCookie.token === process.env.TOKEN) {
-    admin = true;
-  }
-
-  const res = await axios.get(`${url}/api/products`);
+  const food = await axios.get(`${url}/api/products`);
   return {
     props: {
-      pizzaList: res.data,
-      admin,
+      pizzaList: food.data,
     },
   };
 };
